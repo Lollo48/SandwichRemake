@@ -6,6 +6,10 @@ public class BoardTileManager : MonoBehaviour
 {
     [SerializeField] private LevelManager _levelManager;
 
+    private void Start()
+    {
+        GenerateTiles();
+    }
 
     public void GenerateTiles()
     {
@@ -17,18 +21,9 @@ public class BoardTileManager : MonoBehaviour
                 for (int x = 0; x < _levelManager.Grid.GetGridObject(i, j).SwipableObject.Count; x++)
                 {
                     Vector3 pos = _levelManager.Grid.GetWorldPosition(i, j);
-                    pos = new Vector3(pos.x, x * 0.3f, pos.z);
-
-                    Color tmp = Color.cyan;
-
-                    if (_levelManager.Grid.GetGridObject(i, j).SwipableObject[x].Type == PieceType.Bread)
-                        tmp = Color.black;
-
-                    if (_levelManager.Grid.GetGridObject(i, j).SwipableObject[x].Type == PieceType.Piece)
-                        tmp = Color.blue;
-
+                    pos = new Vector3(pos.x, x, pos.z);
                     GameObject go = Instantiate(_levelManager.LevelData.Piece, pos, Quaternion.identity);
-                    go.GetComponent<MeshRenderer>().material.color = tmp;
+
                 }
             }
         }
