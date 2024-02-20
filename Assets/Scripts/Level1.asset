@@ -9,18 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 514f4aba2340a1e4dad43dc6eda44eb4, type: 3}
+  m_Script: {fileID: 11500000, guid: 0efd9e5900d041f468e50f4801d1f30b, type: 3}
   m_Name: Level1
   m_EditorClassIdentifier: 
-  _gridWidth: 4
-  _gridHeight: 4
-  _piece: {fileID: 8675136795357109239, guid: 59cd33e7e9d083645a1e68b0da960487, type: 3}
-  _breadPositions:
+  breadPositions:
   - {x: 0, y: 0}
-  - {x: 0, y: 1}
-  _piecePosition:
   - {x: 1, y: 0}
-  - {x: 1, y: 1}
-  - {x: 1, y: 2}
+  commonPiece:
   - {x: 2, y: 0}
+  - {x: 3, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
   - {x: 2, y: 1}
+  pieceToSpawn: {fileID: 7076764048996398900, guid: ef57ab28b3f75e246b21e543d25f4412, type: 3}

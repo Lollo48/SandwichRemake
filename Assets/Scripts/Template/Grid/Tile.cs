@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Tile 
 {
-    
     public int x;
     public int y;
 
@@ -15,4 +14,5 @@ public class Tile
     }
 
     public override string ToString() => x + "," + y;
+
 }

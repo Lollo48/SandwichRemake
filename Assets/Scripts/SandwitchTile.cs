@@ -5,26 +5,27 @@ using UnityEngine;
 public class SandwitchTile : Tile
 {
 
-    private List<Piece> _swipableObject;
+    public List<GameObject> piece;
 
-    public List<Piece> SwipableObject
+
+    public SandwitchTile(int x, int y) : base(x, y)
     {
-        get { return _swipableObject; }
-        set { _swipableObject = value; }
+        
     }
 
-    public SandwitchTile(int x, int y) : base(x,y)
-    {
 
+    public void AddToStack(List<GameObject> pieces)
+    {
+        if (this.piece == null)
+            this.piece = new List<GameObject>();
+
+        foreach (GameObject piece in pieces)
+            this.piece.Add(piece);
     }
 
-    public void AddToList(List<Piece> piece)
+    public void ClearStack()
     {
-        if (_swipableObject == null)
-            _swipableObject = new List<Piece>();
-
-        foreach (Piece ing in piece)
-            _swipableObject.Add(ing);
+        piece.Clear();
     }
 
 }
