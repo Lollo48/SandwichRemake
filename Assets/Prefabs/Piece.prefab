@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2642169594630113865}
   - component: {fileID: 3491105265480209838}
   - component: {fileID: 8417475611361717225}
-  - component: {fileID: 3600820110605867394}
+  - component: {fileID: 8978409362855411759}
   m_Layer: 0
   m_Name: Piece
   m_TagString: Untagged
@@ -106,7 +106,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3600820110605867394
+--- !u!114 &8978409362855411759
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

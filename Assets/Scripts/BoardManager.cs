@@ -6,12 +6,13 @@ public class BoardManager : MonoBehaviour
 {
     [SerializeField] private int gridWidth;
     [SerializeField] private int gridHeight;
+
     [SerializeField] private Material breadMaterial;
     [SerializeField] private List<Material> commonPieceMaterial = new List<Material>();
 
 
     private Grid<SandwitchTile> grid;
-    [SerializeField] private List<LevelData> boardData = new List<LevelData>();
+    [SerializeField] private List<LevelData> levels = new List<LevelData>();
 
 
 
@@ -19,9 +20,8 @@ public class BoardManager : MonoBehaviour
     public int GridHeight { get => gridHeight; }
 
     public Grid<SandwitchTile> Grid { get => grid; }
-    public List<LevelData> BoardData { get => boardData; }
+    public List<LevelData> BoardData { get => levels; }
 
-    
 
     private void Awake()
     {
@@ -33,22 +33,25 @@ public class BoardManager : MonoBehaviour
             {
                 List<GameObject> piece = new List<GameObject>();
 
-                if (boardData[0].BreadPositions.Contains(new Vector2(i, j)))
+                if (levels[0].BreadPositions.Contains(new Vector2(i, j)))
                 {
-                    GameObject newPiece = Instantiate(boardData[0].PieceToSpawn, new Vector3(i + 0.5f, 0, j + 0.5f), Quaternion.identity);
+                    GameObject newPiece = Instantiate(levels[0].PieceToSpawn, new Vector3(i , 0, j ), Quaternion.identity);
                     newPiece.TryGetComponent(out SwipableObject swipableObject);
-                    swipableObject.Type = IngreditType.Bread;
+                    swipableObject.init(IngreditType.Bread, j, i);
+
+
                     Renderer renderer = newPiece.GetComponent<Renderer>();
                     renderer.material = breadMaterial;
+
                     piece.Add(newPiece);
 
 
                 }
-                else if (boardData[0].CommonPiece.Contains(new Vector2(i, j)))
+                else if (levels[0].CommonPiece.Contains(new Vector2(i, j)))
                 {
-                    GameObject newPiece = Instantiate(boardData[0].PieceToSpawn, new Vector3(i + 0.5f, 0, j + 0.5f), Quaternion.identity);
+                    GameObject newPiece = Instantiate(levels[0].PieceToSpawn, new Vector3(i , 0, j), Quaternion.identity);
                     newPiece.TryGetComponent(out SwipableObject swipableObject);
-                    swipableObject.Type = IngreditType.Piece;
+                    swipableObject.init(IngreditType.Piece, j, i);
                     ChangeColorForCommonPiece(newPiece);
                     piece.Add(newPiece);
 
@@ -60,6 +63,13 @@ public class BoardManager : MonoBehaviour
 
     }
 
+
+    private void OnEnable()
+    {
+        OnTouchMoved.GetGrid += GetGrid;
+    }
+
+   
     private void ChangeColorForCommonPiece(GameObject piece)
     {
         Renderer renderer = piece.GetComponent<Renderer>();
@@ -69,6 +79,14 @@ public class BoardManager : MonoBehaviour
     }
 
 
+
+    private Grid<SandwitchTile> GetGrid() => grid;
+
+    private void OnDisable()
+    {
+        OnTouchMoved.GetGrid -= GetGrid;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
@@ -77,24 +95,23 @@ public class BoardManager : MonoBehaviour
         Vector3 pos1 = new Vector3(0,0,0);
         for (int i = 0; i < gridWidth + 1; i++)
         {
-            pos0.x = i;
-            pos0.z = 0;
-            pos1.x = i;
-            pos1.z = gridHeight;
+            pos0.x = i + transform.position.x;
+            pos0.z = 0 + transform.position.z; 
+            pos1.x = i + transform.position.x;
+            pos1.z = gridHeight + transform.position.z;
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(pos0, pos1);
         }
 
         for (int i = 0; i < gridHeight + 1; i++)
         {
-            pos0.x = 0;
-            pos0.z = i;
-            pos1.x = gridWidth;
-            pos1.z = i;
+            pos0.x = 0 + transform.position.x; 
+            pos0.z = i + transform.position.z; 
+            pos1.x = gridWidth + transform.position.x;
+            pos1.z = i + transform.position.z; 
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(pos0, pos1);
         }
-
 
     }
 }

@@ -15,32 +15,32 @@ public class StateBase<TContex>
         _stateMachine = stateMachine;
     }
 
-    public virtual void OnEnter(TContex contex)
+    public virtual void OnEnter(TContex context)
     {
-        Debug.Log("OnEnter " + StateID);
+        //Debug.Log("OnEnter " + StateID);
 
     }
 
-    public virtual void OnUpdate(TContex contex)
+    public virtual void OnUpdate(TContex context)
     {
         //Debug.Log("OnUpadte " + StateID);
     }
 
-    public virtual void OnFixedUpdate(TContex contex)
+    public virtual void OnFixedUpdate(TContex context)
     {
         //Debug.Log("OnUpadte " + StateID);
     }
 
 
-    public virtual void OnLateUpdate(TContex contex)
+    public virtual void OnLateUpdate(TContex context)
     {
 
     }
 
 
-    public virtual void OnExit(TContex contex)
+    public virtual void OnExit(TContex context)
     {
-        Debug.Log("OnExit " + StateID);
+        //Debug.Log("OnExit " + StateID);
     }
 
 
