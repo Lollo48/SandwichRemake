@@ -6,5 +6,35 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    
+    public GameObject WinPanel;
 
+    private void Awake()
+    {
+        WinPanel.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnNextLevel += ActivateNextLevelPanel;
+
+    }
+
+
+    private void ActivateNextLevelPanel()
+    {
+        WinPanel.SetActive(true);
+    }
+
+    public void OnNextLevel()
+    {
+        GameManager.OnLoadNextLevel.Invoke();
+        WinPanel.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnNextLevel -= ActivateNextLevelPanel;
+
+    }
 }

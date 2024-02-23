@@ -16,7 +16,7 @@ public class LevelManager : MonoBehaviour
 
 
     public static int PiecesInGame = 0; // Da cambiare
-
+    private int index;
 
     public int GridWidth { get => gridWidth; }
     public int GridHeight { get => gridHeight; }
@@ -27,16 +27,18 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
-        CreateLevel(0);
+        index = 0;
+        CreateLevel();
     }
 
     private void OnEnable()
     {
         OnTouchMoved.GetGrid += GetGrid;
+        GameManager.OnLoadNextLevel += CreateLevel;
     }
 
 
-    private void CreateLevel(int index)
+    private void CreateLevel()
     {
         grid = new Grid<SandwitchTile>(gridWidth, gridHeight, 1, transform.position, (int x, int y) => new SandwitchTile(x, y));
         for (int i = 0; i < gridWidth; i++)
@@ -51,7 +53,6 @@ public class LevelManager : MonoBehaviour
                     GameObject newPiece = Instantiate(levels[index].PieceToSpawn, new Vector3(i, 0.3f, j), Quaternion.identity);
                     newPiece.TryGetComponent(out SwipableObject swipableObject);
                     swipableObject.init(IngreditType.Bread, i, j,new Vector3(i, 0.3f, j));
-
 
                     Renderer renderer = newPiece.GetComponent<Renderer>();
                     renderer.material = breadMaterial;
@@ -78,7 +79,8 @@ public class LevelManager : MonoBehaviour
                 grid.GetGridObject(i, j).AddToStack(piece);
             }
         }
-
+        index += 1;
+        
     }
 
 
@@ -95,6 +97,7 @@ public class LevelManager : MonoBehaviour
     private void OnDisable()
     {
         OnTouchMoved.GetGrid -= GetGrid;
+        GameManager.OnLoadNextLevel -= CreateLevel;
     }
 
     private void OnDrawGizmos()

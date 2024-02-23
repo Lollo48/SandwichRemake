@@ -31,6 +31,11 @@ public class SwipableObject : MonoBehaviour
 
     }
 
+    public void ClearLevel()
+    {
+        Destroy(gameObject);
+    }
+
 
 }
 

@@ -8,7 +8,8 @@ public class OnTouchMoved : StateBase<InputManager>
 
     public static event Func<Grid<SandwitchTile>> GetGrid; // uguale action ma ritorna qualcosa
     private Grid<SandwitchTile> grid;
-     
+
+
     public OnTouchMoved(string stateID, StatesMachine<InputManager> statesMachine) : base(stateID, statesMachine)
     {
 
@@ -19,6 +20,7 @@ public class OnTouchMoved : StateBase<InputManager>
     {
         base.OnEnter(context);
         grid = GetGrid.Invoke();
+        
         //Debug.Log(grid);
     }
 
@@ -61,28 +63,40 @@ public class OnTouchMoved : StateBase<InputManager>
     }
 
 
+
+    public override void OnExit(InputManager context)
+    {
+        base.OnExit(context);
+
+    }
+
+
+
+
+
     private void CheckWinCondition(SandwitchTile neighbour)
     {
         if (neighbour.pieces[neighbour.pieces.Count - 1].Type == IngreditType.Bread && neighbour.pieces[0].Type == IngreditType.Bread && neighbour.pieces.Count == LevelManager.PiecesInGame)
         {
             Debug.Log("Winnnnn");
+            foreach (SwipableObject swipableObject in neighbour.pieces)
+            {
+                swipableObject.ClearLevel();
+            }
+            LevelManager.PiecesInGame = 0;
+            GameManager.OnNextLevel.Invoke();
+
         }
     }
    
 
     private void CalculateRightY(SandwitchTile neighbour)
     {
-        //neighbour.pieces.Count = 2 nel primo ciclo 
-        // i = neighbour.pieces.Count - 1   -----> 1
-        //
-        
+
         for (int i = neighbour.pieces.Count -1 ; i >= 0; i--)
         {
             neighbour.pieces[i].transform.position = new Vector3(neighbour.pieces[i].XValue, 0.36f * i, neighbour.pieces[i].YValue);
         }
-
-      
-
 
     }
 
