@@ -35,9 +35,9 @@ public class BoardManager : MonoBehaviour
 
                 if (levels[0].BreadPositions.Contains(new Vector2(i, j)))
                 {
-                    GameObject newPiece = Instantiate(levels[0].PieceToSpawn, new Vector3(i , 0, j ), Quaternion.identity);
+                    GameObject newPiece = Instantiate(levels[0].PieceToSpawn, new Vector3(i , 0.3f, j ), Quaternion.identity);
                     newPiece.TryGetComponent(out SwipableObject swipableObject);
-                    swipableObject.init(IngreditType.Bread, j, i);
+                    swipableObject.init(IngreditType.Bread, i, j);
 
 
                     Renderer renderer = newPiece.GetComponent<Renderer>();
@@ -49,9 +49,9 @@ public class BoardManager : MonoBehaviour
                 }
                 else if (levels[0].CommonPiece.Contains(new Vector2(i, j)))
                 {
-                    GameObject newPiece = Instantiate(levels[0].PieceToSpawn, new Vector3(i , 0, j), Quaternion.identity);
+                    GameObject newPiece = Instantiate(levels[0].PieceToSpawn, new Vector3(i , 0.3f, j), Quaternion.identity);
                     newPiece.TryGetComponent(out SwipableObject swipableObject);
-                    swipableObject.init(IngreditType.Piece, j, i);
+                    swipableObject.init(IngreditType.Piece, i, j);
                     ChangeColorForCommonPiece(newPiece);
                     piece.Add(newPiece);
 

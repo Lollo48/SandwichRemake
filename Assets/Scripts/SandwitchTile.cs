@@ -5,7 +5,7 @@ using UnityEngine;
 public class SandwitchTile : Tile
 {
 
-    public List<GameObject> piece;
+    public List<GameObject> pieces;
 
 
     public SandwitchTile(int x, int y) : base(x, y)
@@ -16,16 +16,22 @@ public class SandwitchTile : Tile
 
     public void AddToStack(List<GameObject> pieces)
     {
-        if (this.piece == null)
-            this.piece = new List<GameObject>();
+        if (this.pieces == null)
+            this.pieces = new List<GameObject>();
 
         foreach (GameObject piece in pieces)
-            this.piece.Add(piece);
+            this.pieces.Add(piece);
+    }
+
+
+    public void RemoveToStack(GameObject piece)
+    {
+        if (pieces.Contains(piece)) pieces.Remove(piece);
     }
 
     public void ClearStack()
     {
-        piece.Clear();
+        pieces.Clear();
     }
 
 }

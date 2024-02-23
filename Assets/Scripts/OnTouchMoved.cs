@@ -8,7 +8,8 @@ public class OnTouchMoved : StateBase<InputManager>
 
     public static event Func<Grid<SandwitchTile>> GetGrid; // uguale action ma ritorna qualcosa
     private Grid<SandwitchTile> grid;
-
+    Vector2 direction;
+     
     public OnTouchMoved(string stateID, StatesMachine<InputManager> statesMachine) : base(stateID, statesMachine)
     {
 
@@ -29,17 +30,24 @@ public class OnTouchMoved : StateBase<InputManager>
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
-            Vector2 direction = GetDirection(touch);
+
+            direction = GetDirection(touch);
             Vector2 previusPosition = GetTouchPosition(context.ObjectToSwipe);
 
             Vector2 nextPosition = GetNextPosition(previusPosition, direction);
-            SandwitchTile neighbour = TryGetNeighbours(nextPosition);
+            if (direction != Vector2.zero)
+            {
+                SandwitchTile neighbour = TryGetNeighbours(nextPosition);
 
-            Debug.Log(neighbour);
-
-            //Debug.Log(direction);
-            //controllo griglia e controllo cella di dove devo andare
-            //preso il pezzo da onTouchBegan spostarlo nella nuova direzione
+                if (neighbour != null && neighbour.pieces.Count > 0 && direction != Vector2.zero)
+                {
+                    Debug.Log(neighbour);
+                    Swipe(context.ObjectToSwipe, neighbour);
+                    context.InputStateMachine.ChangeState(context.onTouchIdle);
+                    //context.InputStateMachine.ChangeState(context.onTouchEnded);
+                }
+                else context.InputStateMachine.ChangeState(context.onTouchIdle);
+            }
         }
         else
         {
@@ -47,20 +55,29 @@ public class OnTouchMoved : StateBase<InputManager>
         }
     }
 
+    public override void OnExit(InputManager context)
+    {
+        base.OnExit(context);
+        direction = Vector2.zero;
+    }
+
+
+
     private void Swipe(SwipableObject objectToSwipe,SandwitchTile neighbour)
     {
+
+        Vector3 newPosition = new Vector3(neighbour.x, 0, neighbour.y);
         
-       
+        objectToSwipe.transform.position = newPosition;
 
     }
 
 
 
-    private SandwitchTile TryGetNeighbours(Vector2 newxtPosition)
+    private SandwitchTile TryGetNeighbours(Vector2 nextPosition)
     {
-        SandwitchTile piece = grid.GetGridObject(newxtPosition);
-        if (piece == null || piece.piece.Count == 0) return null;
-        else return piece;
+        SandwitchTile piece = grid.GetGridObject(nextPosition);
+        return piece;
     }
 
 
