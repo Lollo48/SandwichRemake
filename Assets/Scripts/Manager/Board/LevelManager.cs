@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoardManager : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
     [SerializeField] private int gridWidth;
     [SerializeField] private int gridHeight;
@@ -25,13 +25,17 @@ public class BoardManager : MonoBehaviour
     public List<LevelData> BoardData { get => levels; }
 
 
+    private void Awake()
+    {
+        CreateLevel(0);
+    }
+
     private void OnEnable()
     {
         OnTouchMoved.GetGrid += GetGrid;
-        UIManager.NewLevel += CreateLevel;
     }
 
-   
+
     private void CreateLevel(int index)
     {
         grid = new Grid<SandwitchTile>(gridWidth, gridHeight, 1, transform.position, (int x, int y) => new SandwitchTile(x, y));
@@ -41,7 +45,7 @@ public class BoardManager : MonoBehaviour
             {
                 List<SwipableObject> piece = new List<SwipableObject>();
 
-                if (levels[0].BreadPositions.Contains(new Vector2(i, j)))
+                if (levels[index].BreadPositions.Contains(new Vector2(i, j)))
                 {
 
                     GameObject newPiece = Instantiate(levels[index].PieceToSpawn, new Vector3(i, 0.3f, j), Quaternion.identity);
@@ -57,7 +61,7 @@ public class BoardManager : MonoBehaviour
                     PiecesInGame+=1;
 
                 }
-                else if (levels[0].CommonPiece.Contains(new Vector2(i, j)))
+                else if (levels[index].CommonPiece.Contains(new Vector2(i, j)))
                 {
                     GameObject newPiece = Instantiate(levels[index].PieceToSpawn, new Vector3(i, 0.3f, j), Quaternion.identity);
                     newPiece.TryGetComponent(out SwipableObject swipableObject);
@@ -74,6 +78,7 @@ public class BoardManager : MonoBehaviour
                 grid.GetGridObject(i, j).AddToStack(piece);
             }
         }
+
     }
 
 
@@ -84,15 +89,12 @@ public class BoardManager : MonoBehaviour
         renderer.material = commonPieceMaterial[index];
 
     }
-
-
-
+    
     private Grid<SandwitchTile> GetGrid() => grid;
 
     private void OnDisable()
     {
         OnTouchMoved.GetGrid -= GetGrid;
-        UIManager.NewLevel -= CreateLevel;
     }
 
     private void OnDrawGizmos()

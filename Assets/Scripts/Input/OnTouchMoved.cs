@@ -63,9 +63,9 @@ public class OnTouchMoved : StateBase<InputManager>
 
     private void CheckWinCondition(SandwitchTile neighbour)
     {
-        if (neighbour.pieces[neighbour.pieces.Count - 1].Type == IngreditType.Bread && neighbour.pieces[0].Type == IngreditType.Bread && neighbour.pieces.Count == BoardManager.PiecesInGame)
+        if (neighbour.pieces[neighbour.pieces.Count - 1].Type == IngreditType.Bread && neighbour.pieces[0].Type == IngreditType.Bread && neighbour.pieces.Count == LevelManager.PiecesInGame)
         {
-            Debug.Log("VINTOOO");
+            Debug.Log("Winnnnn");
         }
     }
    

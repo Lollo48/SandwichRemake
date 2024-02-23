@@ -26,6 +26,7 @@ public class SandwitchTile : Tile
     public void ClearStack()
     {
         pieces.Clear();
+     
     }
 
 }
