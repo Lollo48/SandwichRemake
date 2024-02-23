@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    public SwipableObject ObjectToSwipe;
+    [HideInInspector] public SwipableObject ObjectToSwipe;
 
     private StatesMachine<InputManager> inputStateMachine;
 
@@ -21,9 +21,6 @@ public class InputManager : MonoBehaviour
     {
         InitStateMachine();
     }
-
-
-   
 
 
     private void InitStateMachine()

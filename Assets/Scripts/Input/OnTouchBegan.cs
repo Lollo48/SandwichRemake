@@ -49,6 +49,7 @@ public class OnTouchBegan : StateBase<InputManager>
         {
             if (hit.collider.TryGetComponent(out SwipableObject swipableObject))
             {
+                
                 return swipableObject;
             }
             else return null;
