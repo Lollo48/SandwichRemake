@@ -40,6 +40,8 @@ public class LevelManager : MonoBehaviour
 
     private void CreateLevel()
     {
+        if (index == levels.Count) return; // trigger livello finito 
+
         grid = new Grid<SandwitchTile>(gridWidth, gridHeight, 1, transform.position, (int x, int y) => new SandwitchTile(x, y));
         for (int i = 0; i < gridWidth; i++)
         {
@@ -50,9 +52,10 @@ public class LevelManager : MonoBehaviour
                 if (levels[index].BreadPositions.Contains(new Vector2(i, j)))
                 {
 
-                    GameObject newPiece = Instantiate(levels[index].PieceToSpawn, new Vector3(i, 0.3f, j), Quaternion.identity);
+                    GameObject newPiece = Instantiate(levels[index].PieceToSpawn, new Vector3(i, 0f, j), Quaternion.identity);
                     newPiece.TryGetComponent(out SwipableObject swipableObject);
-                    swipableObject.init(IngreditType.Bread, i, j,new Vector3(i, 0.3f, j));
+
+                    swipableObject.init(IngreditType.Bread, i, j);
 
                     Renderer renderer = newPiece.GetComponent<Renderer>();
                     renderer.material = breadMaterial;
@@ -64,9 +67,11 @@ public class LevelManager : MonoBehaviour
                 }
                 else if (levels[index].CommonPiece.Contains(new Vector2(i, j)))
                 {
-                    GameObject newPiece = Instantiate(levels[index].PieceToSpawn, new Vector3(i, 0.3f, j), Quaternion.identity);
+                    GameObject newPiece = Instantiate(levels[index].PieceToSpawn, new Vector3(i, 0f, j), Quaternion.identity);
                     newPiece.TryGetComponent(out SwipableObject swipableObject);
-                    swipableObject.init(IngreditType.Piece, i, j, new Vector3(i, 0.3f, j));
+
+                    swipableObject.init(IngreditType.Piece, i, j);
+
 
                     ChangeColorForCommonPiece(newPiece);
 

@@ -6,11 +6,11 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public static Action OnNextLevel;
-    public static Action OnFinishGame;
+    
     public static Action OnLoadNextLevel;
 
+    public static Action OnFinishGame;
 
-
-
+    public static Action OnUndo;
 
 }

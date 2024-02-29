@@ -9,6 +9,7 @@ public class OnTouchMoved : StateBase<InputManager>
     public static event Func<Grid<SandwitchTile>> GetGrid; // uguale action ma ritorna qualcosa
     private Grid<SandwitchTile> grid;
 
+    public static event Action<SandwitchTile, SandwitchTile> OnRegister;
 
     public OnTouchMoved(string stateID, StatesMachine<InputManager> statesMachine) : base(stateID, statesMachine)
     {
@@ -62,17 +63,11 @@ public class OnTouchMoved : StateBase<InputManager>
         }
     }
 
-
-
     public override void OnExit(InputManager context)
     {
         base.OnExit(context);
-
+        context.ObjectToSwipe = null;
     }
-
-
-
-
 
     private void CheckWinCondition(SandwitchTile neighbour)
     {
@@ -95,10 +90,11 @@ public class OnTouchMoved : StateBase<InputManager>
 
         for (int i = neighbour.pieces.Count -1 ; i >= 0; i--)
         {
-            neighbour.pieces[i].transform.position = new Vector3(neighbour.pieces[i].XValue, 0.36f * i, neighbour.pieces[i].YValue);
+            neighbour.pieces[i].transform.position = new Vector3(neighbour.pieces[i].XValue, 0.1f * i, neighbour.pieces[i].YValue);
         }
 
     }
+
 
     private void Swipe(SwipableObject objectToSwipe,SandwitchTile neighbour)
     {
@@ -108,21 +104,22 @@ public class OnTouchMoved : StateBase<InputManager>
         CurrentTile.pieces.Reverse();
 
         neighbour.AddToStack(CurrentTile.pieces);
+
         //Debug.Log(neighbour.pieces.Count);
 
         Vector3 newPosition = new Vector3(neighbour.x, 0f, neighbour.y);
 
-        if (CurrentTile.pieces.Count != 0 )
+        foreach (SwipableObject swipableObject in CurrentTile.pieces)
         {
-            foreach (SwipableObject swipableObject in CurrentTile.pieces)
-            {
-                swipableObject.transform.position = newPosition;
+            swipableObject.transform.position = newPosition;
 
-                swipableObject.XValue = neighbour.x;
-                swipableObject.YValue = neighbour.y;
-                swipableObject.AddNewPosition(newPosition);
-            }
+            swipableObject.XValue = neighbour.x;
+            swipableObject.YValue = neighbour.y;
+
+            //Debug.Log(neighbour.pieces[0].Type);
         }
+
+        OnRegister?.Invoke(neighbour, CurrentTile);
 
         CurrentTile.ClearStack();
     }

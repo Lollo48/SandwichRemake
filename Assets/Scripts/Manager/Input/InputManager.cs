@@ -17,6 +17,7 @@ public class InputManager : MonoBehaviour
     public OnTouchEnded onTouchEnded;
 
 
+
     private void Start()
     {
         InitStateMachine();
@@ -26,7 +27,6 @@ public class InputManager : MonoBehaviour
     private void InitStateMachine()
     {
         inputStateMachine = new StatesMachine<InputManager>(this);
-
         onTouchBegan = new OnTouchBegan("onTouchBegan", inputStateMachine);
         onTouchIdle = new OnTouchIdle("onTouchIdle", inputStateMachine);
         onTouchMoved = new OnTouchMoved("onTouchMoved", inputStateMachine);
@@ -36,13 +36,14 @@ public class InputManager : MonoBehaviour
     }
 
 
+
     private void Update()
     {
         inputStateMachine.CurrentState.OnUpdate(this);
     }
 
 
-
+   
 
 
 }
