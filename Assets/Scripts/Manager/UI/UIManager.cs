@@ -37,6 +37,7 @@ public class UIManager : MonoBehaviour
     }
 
 
+
     private void OnDisable()
     {
         GameManager.OnNextLevel -= ActivateNextLevelPanel;

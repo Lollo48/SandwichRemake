@@ -23,6 +23,8 @@ public class InputManager : MonoBehaviour
         InitStateMachine();
     }
 
+    
+
 
     private void InitStateMachine()
     {
@@ -39,6 +41,7 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(ObjectToSwipe);
         inputStateMachine.CurrentState.OnUpdate(this);
     }
 
