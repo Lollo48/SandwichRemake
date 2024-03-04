@@ -35,6 +35,7 @@ public class LevelManager : MonoBehaviour
     {
         OnTouchMoved.GetGrid += GetGrid;
         GameManager.OnLoadNextLevel += CreateLevel;
+        GameManager.OnRestartLevel += RestartLevel;
     }
 
 
@@ -89,6 +90,73 @@ public class LevelManager : MonoBehaviour
     }
 
 
+    private void RestartLevel()
+    {
+        PiecesInGame = 0;
+
+        for (int i = 0; i < gridWidth; i++)
+        {
+            for (int j = 0; j < gridHeight; j++)
+            {
+                SandwitchTile sandwitchTile = grid.GetGridObject(i, j);
+                Debug.Log(sandwitchTile.pieces);
+                
+                if(sandwitchTile.pieces.Count > 0)
+                {
+                    foreach (SwipableObject swipableObject in sandwitchTile.pieces)
+                    {
+                        swipableObject.ClearLevel();
+                    }
+                }
+                   
+            }
+        }
+
+        grid = new Grid<SandwitchTile>(gridWidth, gridHeight, 1, transform.position, (int x, int y) => new SandwitchTile(x, y));
+        for (int i = 0; i < gridWidth; i++)
+        {
+            for (int j = 0; j < gridHeight; j++)
+            {
+                List<SwipableObject> piece = new List<SwipableObject>();
+
+                if (levels[index - 1].BreadPositions.Contains(new Vector2(i, j)))
+                {
+
+                    GameObject newPiece = Instantiate(levels[index].PieceToSpawn, new Vector3(i, 0f, j), Quaternion.identity);
+                    newPiece.TryGetComponent(out SwipableObject swipableObject);
+
+                    swipableObject.init(IngreditType.Bread, i, j);
+
+                    Renderer renderer = newPiece.GetComponent<Renderer>();
+                    renderer.material = breadMaterial;
+
+                    piece.Add(swipableObject);
+
+                    PiecesInGame += 1;
+
+                }
+                else if (levels[index - 1].CommonPiece.Contains(new Vector2(i, j)))
+                {
+                    GameObject newPiece = Instantiate(levels[index].PieceToSpawn, new Vector3(i, 0f, j), Quaternion.identity);
+                    newPiece.TryGetComponent(out SwipableObject swipableObject);
+
+                    swipableObject.init(IngreditType.Piece, i, j);
+
+
+                    ChangeColorForCommonPiece(newPiece);
+
+                    piece.Add(swipableObject);
+
+                    PiecesInGame += 1;
+
+                }
+
+                grid.GetGridObject(i, j).AddToStack(piece);
+            }
+        }
+    }
+
+
     private void ChangeColorForCommonPiece(GameObject piece)
     {
         Renderer renderer = piece.GetComponent<Renderer>();
@@ -103,6 +171,7 @@ public class LevelManager : MonoBehaviour
     {
         OnTouchMoved.GetGrid -= GetGrid;
         GameManager.OnLoadNextLevel -= CreateLevel;
+        GameManager.OnRestartLevel -= RestartLevel;
     }
 
     private void OnDrawGizmos()

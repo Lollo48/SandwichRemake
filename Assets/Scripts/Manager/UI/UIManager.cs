@@ -10,12 +10,14 @@ public class UIManager : MonoBehaviour
     public static event Action OnTryUndo;
     public GameObject WinPanel;
     public Button UndoButton;
-
+    public Button RestartButton;
 
     private void Awake()
     {
         WinPanel.SetActive(false);
         UndoButton.onClick.AddListener( ()=> OnTryUndo?.Invoke());
+        RestartButton.onClick.AddListener(() => GameManager.OnRestartLevel.Invoke());
+
     }
 
     private void OnEnable()

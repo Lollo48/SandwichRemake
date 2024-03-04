@@ -13,4 +13,5 @@ public class GameManager : MonoBehaviour
 
     public static Action OnUndo;
 
+    public static Action OnRestartLevel;
 }
