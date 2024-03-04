@@ -41,7 +41,7 @@ public class LevelManager : MonoBehaviour
 
     private void CreateLevel()
     {
-        if (index == levels.Count) return; // trigger livello finito 
+        if (index == levels.Count) index = 0;
 
         grid = new Grid<SandwitchTile>(gridWidth, gridHeight, 1, transform.position, (int x, int y) => new SandwitchTile(x, y));
         for (int i = 0; i < gridWidth; i++)
